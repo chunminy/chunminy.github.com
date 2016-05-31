@@ -1,0 +1,423 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Dreaming</title>
+  <meta name="author" content="chunminy">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="Dreaming"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Dreaming" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Dreaming</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-05-31T15:02:14.000Z"><a href="/2016/05/31/0/">2016-05-31</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/05/31/0/">Unity Rect</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。</p>
+<p>跟其他API的Rect差不多主要成員是left,right,top,bottom分別代表左右上下四個參數，但是這四個參數原則上是被封裝保護起來的，Unity有這幾種操作模式來改變參數，不太建議在一個操作中混合使用(<del>除非邏輯概念很好</del>)。<br><br><strong>需要特別注意的是Y軸在UI系統中通常yMin代表top、yMax代表bottom，簡單說就是由上往下計算。</strong><br></p>
+<p>1： xMin,yMin,xMax,yMax <br></p>
+<pre><code>改變 xMin 時會修改 left;
+改變 xMax 時會修改 right;
+改變 yMin 時會修改 bottom;
+改變 yMax 時會修改 top;
+</code></pre><p>2： x,y,width,height <br></p>
+<pre><code>改變 x 時會修改 left;
+改變 y 時會修改 bottom
+改變 width 時則以 left 為基礎去調整 right
+改變 height 時則以 bottom 為基礎去調整 top
+</code></pre><p>3： position &amp; size <br></p>
+<pre><code>修改 position 時會調整 x &amp; y
+修改 size 時會調整 width &amp; height
+</code></pre><p><strong> P.S.包了這麼多層其實有點煩，尤其Rect是會很頻繁使用的class </strong></p>
+<hr>
+<h1 id="接著來說明一下幾個比較常用的Function"><a href="#接著來說明一下幾個比較常用的Function" class="headerlink" title="接著來說明一下幾個比較常用的Function"></a>接著來說明一下幾個比較常用的Function</h1><pre><code>Rect.center
+回傳一個Vector2，分別代表著X軸跟Y軸的中心點。
+</code></pre><p><br></p>
+<pre><code>Rect.Contains
+public bool Contains(Vector2 point);
+public bool Contains(Vector3 point);
+public bool Contains(Vector3 point, bool allowInverse);
+判定Vector是否在Rect的範圍裡
+allowInverse == true
+代表當Rect的left大於right或是bottom大於top時
+(就是顛倒過來的矩形，你是沒辦法控制使用者的)
+不管呈現怎樣的矩形，都可以判定Vector是否在這個矩形裡面。
+</code></pre><p><br></p>
+<pre><code>Rect.Overlaps
+public bool Overlaps(Rect other);
+public bool Overlaps(Rect other, bool allowInverse);
+判定兩個Rect是否交互重疊
+allowInverse 就不重複解釋了，跟Contains一樣
+</code></pre><p><br></p>
+<h1 id="Rect-PointToNormalized-amp-Rect-NormalizedToPoint"><a href="#Rect-PointToNormalized-amp-Rect-NormalizedToPoint" class="headerlink" title="Rect.PointToNormalized &amp; Rect.NormalizedToPoint"></a>Rect.PointToNormalized &amp; Rect.NormalizedToPoint</h1><p>這兩個Function是很微妙的東西，會寫這篇主要也是為了這兩個Function<br><br>(<del>很少相關資訊害我在那邊研究了半個小時</del>)</p>
+<pre><code>Rect.PointToNormalized
+public static Vector2 PointToNormalized(Rect rectangle, Vector2 point);
+回傳一個Vector 數值 0 ~ 1，代表point在Rect中的內差值
+如果Point在Rect之外，則數值會卡在0或1 (看是大於還是小於)
+</code></pre><p><br></p>
+<pre><code>Rect.NormalizedToPoint
+public static Vector2 NormalizedToPoint(Rect rectangle, Vector2 normalizedRectCoordinates);
+給予一個Rect跟數值0 ~ 1之間的Vector
+回傳一個以Vector為內差值參考的座標點
+</code></pre><p>這個東西可以用在蠻多地方的，雖然一般都是自己撰寫相關的轉換式。<br>例如：<br><br>利用 Rect.PointToNormalized 給予世界範圍跟角色座標來取得相關的內差值。<br><br>再利用 Rect.NormalizedToPoint 來處理內差跟世界地圖就可以推算出角色在地圖上的點<br></p>
+<p><strong>說得複雜一點就是用來轉換兩個不同基本單位的座標轉換拉</strong><br><br><br><br><br><br><br><br></p>
+<h1 id="補一段驗證用的Unity-Code"><a href="#補一段驗證用的Unity-Code" class="headerlink" title="補一段驗證用的Unity Code"></a>補一段驗證用的Unity Code</h1><p>產生一個Empty GameObject之後把這個Script丟進去運行遊戲後，就可以在Inspector裡面調整觀察拉。</p>
+<pre><code>using UnityEngine;
+using System.Collections;
+
+public class RectTest : MonoBehaviour {
+
+    public Rect rect = new Rect (0,0,100,100);
+
+    public Vector2 rectCenter;
+    public float width;
+    public float height;
+    public Vector2 position;
+    public Vector2 size;
+    public Vector2 min;
+    public Vector2 max;
+    public float xMin;
+    public float yMin;
+    public float xMax;
+    public float yMax;
+    public float left;
+    public float right;
+    public float top;
+    public float bottom;
+
+    void Update () {
+        rectCenter = rect.center;
+        width = rect.width;
+        height = rect.height;
+        position = rect.position;
+        size = rect.size;
+        max = rect.max;
+        min = rect.min;
+        xMin = rect.xMin;
+        yMin = rect.yMin;
+        xMax = rect.xMax;
+        yMax = rect.yMax;
+        left = rect.left;
+        right = rect.right;
+        top = rect.top;
+        bottom = rect.bottom;
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-05-28T14:07:10.000Z"><a href="/2016/05/28/2016-05-28/">2016-05-28</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/05/28/2016-05-28/">一個晚上就可以做完的project part 2</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>雖然想說一個晚上就可以做完的Project<br><br>不過這個花了多點時間，差不多是一個半的晚上吧。<br><br>機制還缺很多沒補完…不過就先這樣吧。</p>
+<p><del><a href="https://itunes.apple.com/tw/app/shi-kong-zhi-men/id1071795421?amp%3Bct=GNN" target="_blank" rel="external">向時空之門致敬</a></del></p>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/oHVv4YG3GS0" frameborder="0" allowfullscreen></iframe>
+
+
+
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-05-28T07:25:16.000Z"><a href="/2016/05/28/1/">2016-05-28</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/05/28/1/">Hexo 生成檔案附帶日期</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>使用Hexo 建立新文章時，只需要下指令<code>hexo n [title]</code>就會自動生成md檔<br>若是希望檔名可以附帶日期以便整理，可以修改<code>_config.yml</code></p>
+<pre><code># Writing
+new_post_name: :year-:month-:day.md # File name of new posts
+</code></pre><table>
+<thead>
+<tr>
+<th>參數</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:title</td>
+<td>標題</td>
+</tr>
+<tr>
+<td>:year</td>
+<td>年份</td>
+</tr>
+<tr>
+<td>:month</td>
+<td>月份</td>
+</tr>
+<tr>
+<td>:day</td>
+<td>日期</td>
+</tr>
+</tbody>
+</table>
+<p>如此一來自動產生的檔案就會變成2016-05-28.md<br><br>附帶一提，若是有相同名稱的檔案則會自動補上count<br><br>例如</p>
+<pre><code>2016-05-28.md
+2016-05-28-1.md
+2016-05-28-2.md
+</code></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-05-28T04:04:50.000Z"><a href="/2016/05/28/00/">2016-05-28</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/05/28/00/">sublime text 移除空白</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>為了避免下意識多按的空白鍵造成程式碼夾帶多餘的空白，翻找了一下sublime text的設定<br>只需要在 <code>Preferences-&gt;Settings-User</code> 調整參數就可以了</p>
+<pre><code>&quot;trim_trailing_white_space_on_save&quot;: true,
+&quot;draw_white_space&quot;: &quot;all&quot;,
+&quot;translate_tabs_to_spaces&quot;: true,
+&quot;tab_size&quot;: 4,
+</code></pre><p>##trim_trailing_white_space_on_save<br>在存檔時會自動刪除每一行後面多餘的空白</p>
+<p>##draw_white_space<br>會直接顯示出空白或是Tab，這樣就可以分辨到底哪邊是空白哪邊是Tab了</p>
+<p>##translate_tabs_to_spaces<br>按Tab時自動轉成空白鍵</p>
+<p>##tab_size<br>每次案tab代表幾個空白</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-05-24T07:31:06.000Z"><a href="/2016/05/24/00/">2016-05-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/05/24/00/">砍掉重來</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="聽說最近流行一個晚上就可以做完的project"><a href="#聽說最近流行一個晚上就可以做完的project" class="headerlink" title="聽說最近流行一個晚上就可以做完的project"></a>聽說最近流行一個晚上就可以做完的project</h1><p>早些年在玩Minecraft時就簡單寫了一套Minecraft基本系統玩玩，最近玩了PS4上的<a href="http://www.dragonquest.jp/builders/" target="_blank" rel="external">DBQ</a>之後心癢難耐，就把之前的系統拿出來整理一下，不過素材都是公司資產所以就不方便拿來測試。</p>
+<p>基於最近回去複習了Unity，而最快的方式就是寫個小專案來恢復記憶，所以乾脆就用Unity搭配之前寫的小系統，在稍微串接一下角色移動、UI事件、物理碰撞、攝影機追蹤這些功能，簡略地寫了一個小小的Demo來玩玩。</p>
+<p>手機上跑起來的效果大概就這樣吧</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-q6qENlF0y4" frameborder="0" allowfullscreen></iframe>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+<nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:chunminy.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Programs/Demo/">Demo</a><small>2</small></li>
+  
+    <li><a href="/categories/Programs/Notes/">Notes</a><small>1</small></li>
+  
+    <li><a href="/categories/Programs/">Programs</a><small>3</small></li>
+  
+    <li><a href="/categories/Tool/">Tool</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Game/">Game</a><small>2</small></li>
+  
+    <li><a href="/tags/Hexo/">Hexo</a><small>1</small></li>
+  
+    <li><a href="/tags/SublimeText/">SublimeText</a><small>1</small></li>
+  
+    <li><a href="/tags/Unity/">Unity</a><small>3</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 chunminy
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
