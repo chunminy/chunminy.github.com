@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Dreaming</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://chunminy.github.io/"/>
+  <updated>2016-05-31T16:41:05.000Z</updated>
+  <id>https://chunminy.github.io/</id>
+  
+  <author>
+    <name>chunminy</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Unity Rect</title>
+    <link href="https://chunminy.github.io/2016/05/31/0/"/>
+    <id>https://chunminy.github.io/2016/05/31/0/</id>
+    <published>2016-05-31T15:02:14.000Z</published>
+    <updated>2016-05-31T16:41:05.000Z</updated>
+    
+    <content type="html">&lt;p&gt;最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。&lt;/p&gt;
+&lt;p&gt;跟其他API的Rect差不多主要成員是left,right,top,bottom分別代表左右上下四個參數，但是這四個參數原則上是被封裝保護起來的，Unity有這幾種操作模式來改變參數，不太建議在一個操作中混合使用(&lt;del&gt;除非邏輯概念很好&lt;/del&gt;)。&lt;br&gt;&lt;br&gt;&lt;strong&gt;需要特別注意的是Y軸在UI系統中通常yMin代表top、yMax代表bottom，簡單說就是由上往下計算。&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;1： xMin,yMin,xMax,yMax &lt;br&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;改變 xMin 時會修改 left;
+改變 xMax 時會修改 right;
+改變 yMin 時會修改 bottom;
+改變 yMax 時會修改 top;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2： x,y,width,height &lt;br&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;改變 x 時會修改 left;
+改變 y 時會修改 bottom
+改變 width 時則以 left 為基礎去調整 right
+改變 height 時則以 bottom 為基礎去調整 top
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;3： position &amp;amp; size &lt;br&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;修改 position 時會調整 x &amp;amp; y
+修改 size 時會調整 width &amp;amp; height
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt; P.S.包了這麼多層其實有點煩，尤其Rect是會很頻繁使用的class &lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;接著來說明一下幾個比較常用的Function&quot;&gt;&lt;a href=&quot;#接著來說明一下幾個比較常用的Function&quot; class=&quot;headerlink&quot; title=&quot;接著來說明一下幾個比較常用的Function&quot;&gt;&lt;/a&gt;接著來說明一下幾個比較常用的Function&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;Rect.center
+回傳一個Vector2，分別代表著X軸跟Y軸的中心點。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Rect.Contains
+public bool Contains(Vector2 point);
+public bool Contains(Vector3 point);
+public bool Contains(Vector3 point, bool allowInverse);
+判定Vector是否在Rect的範圍裡
+allowInverse == true
+代表當Rect的left大於right或是bottom大於top時
+(就是顛倒過來的矩形，你是沒辦法控制使用者的)
+不管呈現怎樣的矩形，都可以判定Vector是否在這個矩形裡面。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Rect.Overlaps
+public bool Overlaps(Rect other);
+public bool Overlaps(Rect other, bool allowInverse);
+判定兩個Rect是否交互重疊
+allowInverse 就不重複解釋了，跟Contains一樣
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h1 id=&quot;Rect-PointToNormalized-amp-Rect-NormalizedToPoint&quot;&gt;&lt;a href=&quot;#Rect-PointToNormalized-amp-Rect-NormalizedToPoint&quot; class=&quot;headerlink&quot; title=&quot;Rect.PointToNormalized &amp;amp; Rect.NormalizedToPoint&quot;&gt;&lt;/a&gt;Rect.PointToNormalized &amp;amp; Rect.NormalizedToPoint&lt;/h1&gt;&lt;p&gt;這兩個Function是很微妙的東西，會寫這篇主要也是為了這兩個Function&lt;br&gt;&lt;br&gt;(&lt;del&gt;很少相關資訊害我在那邊研究了半個小時&lt;/del&gt;)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Rect.PointToNormalized
+public static Vector2 PointToNormalized(Rect rectangle, Vector2 point);
+回傳一個Vector 數值 0 ~ 1，代表point在Rect中的內差值
+如果Point在Rect之外，則數值會卡在0或1 (看是大於還是小於)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Rect.NormalizedToPoint
+public static Vector2 NormalizedToPoint(Rect rectangle, Vector2 normalizedRectCoordinates);
+給予一個Rect跟數值0 ~ 1之間的Vector
+回傳一個以Vector為內差值參考的座標點
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;這個東西可以用在蠻多地方的，雖然一般都是自己撰寫相關的轉換式。&lt;br&gt;例如：&lt;br&gt;&lt;br&gt;利用 Rect.PointToNormalized 給予世界範圍跟角色座標來取得相關的內差值。&lt;br&gt;&lt;br&gt;再利用 Rect.NormalizedToPoint 來處理內差跟世界地圖就可以推算出角色在地圖上的點&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;說得複雜一點就是用來轉換兩個不同基本單位的座標轉換拉&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h1 id=&quot;補一段驗證用的Unity-Code&quot;&gt;&lt;a href=&quot;#補一段驗證用的Unity-Code&quot; class=&quot;headerlink&quot; title=&quot;補一段驗證用的Unity Code&quot;&gt;&lt;/a&gt;補一段驗證用的Unity Code&lt;/h1&gt;&lt;p&gt;產生一個Empty GameObject之後把這個Script丟進去運行遊戲後，就可以在Inspector裡面調整觀察拉。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using UnityEngine;
+using System.Collections;
+
+public class RectTest : MonoBehaviour {
+
+    public Rect rect = new Rect (0,0,100,100);
+
+    public Vector2 rectCenter;
+    public float width;
+    public float height;
+    public Vector2 position;
+    public Vector2 size;
+    public Vector2 min;
+    public Vector2 max;
+    public float xMin;
+    public float yMin;
+    public float xMax;
+    public float yMax;
+    public float left;
+    public float right;
+    public float top;
+    public float bottom;
+
+    void Update () {
+        rectCenter = rect.center;
+        width = rect.width;
+        height = rect.height;
+        position = rect.position;
+        size = rect.size;
+        max = rect.max;
+        min = rect.min;
+        xMin = rect.xMin;
+        yMin = rect.yMin;
+        xMax = rect.xMax;
+        yMax = rect.yMax;
+        left = rect.left;
+        right = rect.right;
+        top = rect.top;
+        bottom = rect.bottom;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。&lt;/p&gt;
+&lt;p&gt;跟其他API的Rect差不多主要成員是left,right,top,bottom分別代表左右上下四個參數，但是這
+    
+    </summary>
+    
+      <category term="Programs" scheme="https://chunminy.github.io/categories/Programs/"/>
+    
+      <category term="Notes" scheme="https://chunminy.github.io/categories/Programs/Notes/"/>
+    
+    
+      <category term="Unity" scheme="https://chunminy.github.io/tags/Unity/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一個晚上就可以做完的project part 2</title>
+    <link href="https://chunminy.github.io/2016/05/28/2016-05-28/"/>
+    <id>https://chunminy.github.io/2016/05/28/2016-05-28/</id>
+    <published>2016-05-28T14:07:10.000Z</published>
+    <updated>2016-05-31T15:06:33.000Z</updated>
+    
+    <content type="html">&lt;p&gt;雖然想說一個晚上就可以做完的Project&lt;br&gt;&lt;br&gt;不過這個花了多點時間，差不多是一個半的晚上吧。&lt;br&gt;&lt;br&gt;機制還缺很多沒補完…不過就先這樣吧。&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;&lt;a href=&quot;https://itunes.apple.com/tw/app/shi-kong-zhi-men/id1071795421?amp%3Bct=GNN&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;向時空之門致敬&lt;/a&gt;&lt;/del&gt;&lt;/p&gt;
+&lt;iframe width=&quot;420&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/oHVv4YG3GS0&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+
+
+
+
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;雖然想說一個晚上就可以做完的Project&lt;br&gt;&lt;br&gt;不過這個花了多點時間，差不多是一個半的晚上吧。&lt;br&gt;&lt;br&gt;機制還缺很多沒補完…不過就先這樣吧。&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;&lt;a href=&quot;https://itunes.apple.com/tw/app/shi-k
+    
+    </summary>
+    
+      <category term="Programs" scheme="https://chunminy.github.io/categories/Programs/"/>
+    
+      <category term="Demo" scheme="https://chunminy.github.io/categories/Programs/Demo/"/>
+    
+    
+      <category term="Unity" scheme="https://chunminy.github.io/tags/Unity/"/>
+    
+      <category term="Game" scheme="https://chunminy.github.io/tags/Game/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo 生成檔案附帶日期</title>
+    <link href="https://chunminy.github.io/2016/05/28/1/"/>
+    <id>https://chunminy.github.io/2016/05/28/1/</id>
+    <published>2016-05-28T07:25:16.000Z</published>
+    <updated>2016-05-31T15:06:33.000Z</updated>
+    
+    <content type="html">&lt;p&gt;使用Hexo 建立新文章時，只需要下指令&lt;code&gt;hexo n [title]&lt;/code&gt;就會自動生成md檔&lt;br&gt;若是希望檔名可以附帶日期以便整理，可以修改&lt;code&gt;_config.yml&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Writing
+new_post_name: :year-:month-:day.md # File name of new posts
+&lt;/code&gt;&lt;/pre&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;參數&lt;/th&gt;
+&lt;th&gt;作用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;:title&lt;/td&gt;
+&lt;td&gt;標題&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;:year&lt;/td&gt;
+&lt;td&gt;年份&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;:month&lt;/td&gt;
+&lt;td&gt;月份&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;:day&lt;/td&gt;
+&lt;td&gt;日期&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;如此一來自動產生的檔案就會變成2016-05-28.md&lt;br&gt;&lt;br&gt;附帶一提，若是有相同名稱的檔案則會自動補上count&lt;br&gt;&lt;br&gt;例如&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;2016-05-28.md
+2016-05-28-1.md
+2016-05-28-2.md
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;使用Hexo 建立新文章時，只需要下指令&lt;code&gt;hexo n [title]&lt;/code&gt;就會自動生成md檔&lt;br&gt;若是希望檔名可以附帶日期以便整理，可以修改&lt;code&gt;_config.yml&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Writing
+new_po
+    
+    </summary>
+    
+      <category term="Tool" scheme="https://chunminy.github.io/categories/Tool/"/>
+    
+    
+      <category term="Hexo" scheme="https://chunminy.github.io/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sublime text 移除空白</title>
+    <link href="https://chunminy.github.io/2016/05/28/00/"/>
+    <id>https://chunminy.github.io/2016/05/28/00/</id>
+    <published>2016-05-28T04:04:50.000Z</published>
+    <updated>2016-05-31T15:06:33.000Z</updated>
+    
+    <content type="html">&lt;p&gt;為了避免下意識多按的空白鍵造成程式碼夾帶多餘的空白，翻找了一下sublime text的設定&lt;br&gt;只需要在 &lt;code&gt;Preferences-&amp;gt;Settings-User&lt;/code&gt; 調整參數就可以了&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot;trim_trailing_white_space_on_save&amp;quot;: true,
+&amp;quot;draw_white_space&amp;quot;: &amp;quot;all&amp;quot;,
+&amp;quot;translate_tabs_to_spaces&amp;quot;: true,
+&amp;quot;tab_size&amp;quot;: 4,
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##trim_trailing_white_space_on_save&lt;br&gt;在存檔時會自動刪除每一行後面多餘的空白&lt;/p&gt;
+&lt;p&gt;##draw_white_space&lt;br&gt;會直接顯示出空白或是Tab，這樣就可以分辨到底哪邊是空白哪邊是Tab了&lt;/p&gt;
+&lt;p&gt;##translate_tabs_to_spaces&lt;br&gt;按Tab時自動轉成空白鍵&lt;/p&gt;
+&lt;p&gt;##tab_size&lt;br&gt;每次案tab代表幾個空白&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;為了避免下意識多按的空白鍵造成程式碼夾帶多餘的空白，翻找了一下sublime text的設定&lt;br&gt;只需要在 &lt;code&gt;Preferences-&amp;gt;Settings-User&lt;/code&gt; 調整參數就可以了&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot;trim_trai
+    
+    </summary>
+    
+      <category term="Tool" scheme="https://chunminy.github.io/categories/Tool/"/>
+    
+    
+      <category term="SublimeText" scheme="https://chunminy.github.io/tags/SublimeText/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>砍掉重來</title>
+    <link href="https://chunminy.github.io/2016/05/24/00/"/>
+    <id>https://chunminy.github.io/2016/05/24/00/</id>
+    <published>2016-05-24T07:31:06.000Z</published>
+    <updated>2016-05-31T15:06:33.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;a href=&quot;#聽說最近流行一個晚上就可以做完的project&quot; class=&quot;headerlink&quot; title=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;/a&gt;聽說最近流行一個晚上就可以做完的project&lt;/h1&gt;&lt;p&gt;早些年在玩Minecraft時就簡單寫了一套Minecraft基本系統玩玩，最近玩了PS4上的&lt;a href=&quot;http://www.dragonquest.jp/builders/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DBQ&lt;/a&gt;之後心癢難耐，就把之前的系統拿出來整理一下，不過素材都是公司資產所以就不方便拿來測試。&lt;/p&gt;
+&lt;p&gt;基於最近回去複習了Unity，而最快的方式就是寫個小專案來恢復記憶，所以乾脆就用Unity搭配之前寫的小系統，在稍微串接一下角色移動、UI事件、物理碰撞、攝影機追蹤這些功能，簡略地寫了一個小小的Demo來玩玩。&lt;/p&gt;
+&lt;p&gt;手機上跑起來的效果大概就這樣吧&lt;/p&gt;
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/-q6qENlF0y4&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;a href=&quot;#聽說最近流行一個晚上就可以做完的project&quot; class=&quot;headerlink&quot; title=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;/a&gt;聽說最近流行一個晚上就可以做完的p
+    
+    </summary>
+    
+      <category term="Programs" scheme="https://chunminy.github.io/categories/Programs/"/>
+    
+      <category term="Demo" scheme="https://chunminy.github.io/categories/Programs/Demo/"/>
+    
+    
+      <category term="Unity" scheme="https://chunminy.github.io/tags/Unity/"/>
+    
+      <category term="Game" scheme="https://chunminy.github.io/tags/Game/"/>
+    
+  </entry>
+  
+</feed>
