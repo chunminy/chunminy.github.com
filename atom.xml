@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://chunminy.github.io/"/>
-  <updated>2016-06-01T00:29:44.000Z</updated>
+  <updated>2016-06-01T15:57:04.000Z</updated>
   <id>https://chunminy.github.io/</id>
   
   <author>
@@ -16,11 +16,43 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>串流系統基本款</title>
+    <link href="https://chunminy.github.io/2016/06/01/0/"/>
+    <id>https://chunminy.github.io/2016/06/01/0/</id>
+    <published>2016-06-01T02:32:59.000Z</published>
+    <updated>2016-06-01T15:57:04.000Z</updated>
+    
+    <content type="html">&lt;p&gt;身為一個TA有事沒事總是喜歡找一些美術相關的資訊，前陣子看到幾個不錯的Unity工具，而其中這個&lt;a href=&quot;https://www.assetstore.unity3d.com/en/#!/content/56762&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MapMagic&lt;/a&gt;完全就是我的菜啊，對於這種拖拉點點就可以完成的編輯系統&lt;del&gt;一直是我心中的夢想&lt;/del&gt;，礙於現實面一直沒有時間實作這個系統出來，在看完MapMagic介紹影片之後覺得以後這種系統應該會變成基本中的基本，所以就花了點時間來構思系統架構順便驗證一下對於Unity的EditorWindow熟悉度，目前完成了幾個基本功能，剩下就是再稍微OO化方便繼承更多功能出來吧。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;iframe width=&quot;420&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/HJqE3_4ex_8&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+
+
+
+
+
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;身為一個TA有事沒事總是喜歡找一些美術相關的資訊，前陣子看到幾個不錯的Unity工具，而其中這個&lt;a href=&quot;https://www.assetstore.unity3d.com/en/#!/content/56762&quot;&gt;MapMagic&lt;/a&gt;完全就是我的菜啊，對於這種拖拉點點就可以完成的編輯系統&lt;del&gt;一直是我心中的夢想&lt;/del&gt;，礙於現實面一直沒有時間實作這個系統出來，在看完MapMagic介紹影片之後覺得以後這種系統應該會變成基本中的基本，所以就花了點時間來構思系統架構順便驗證一下對於Unity的EditorWindow熟悉度，目前完成了幾個基本功能，剩下就是再稍微OO化方便繼承更多功能出來吧。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Programs" scheme="https://chunminy.github.io/categories/Programs/"/>
+    
+      <category term="Demo" scheme="https://chunminy.github.io/categories/Programs/Demo/"/>
+    
+    
+      <category term="Unity" scheme="https://chunminy.github.io/tags/Unity/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Unity Rect</title>
     <link href="https://chunminy.github.io/2016/05/31/0/"/>
     <id>https://chunminy.github.io/2016/05/31/0/</id>
     <published>2016-05-31T15:02:14.000Z</published>
-    <updated>2016-06-01T00:29:44.000Z</updated>
+    <updated>2016-06-01T00:30:55.000Z</updated>
     
     <content type="html">&lt;p&gt;最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;跟其他API的Rect差不多主要成員是left,right,top,bottom分別代表左右上下四個參數，但是這四個參數原則上是被封裝保護起來的，Unity有這幾種操作模式來改變參數，不太建議在一個操作中混合使用(&lt;del&gt;除非邏輯概念很好&lt;/del&gt;)。&lt;br&gt;&lt;br&gt;&lt;strong&gt;需要特別注意的是Y軸在UI系統中通常yMin代表top、yMax代表bottom，簡單說就是由上往下計算。&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
