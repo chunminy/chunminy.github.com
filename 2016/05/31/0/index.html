@@ -6,8 +6,7 @@
   <title>Unity Rect | Dreaming</title>
   <meta name="author" content="chunminy">
   
-  <meta name="description" content="最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。
-跟其他API的Rect差不多主要成員是left,right,top,bottom分別代表左右上下四個參數，但是這四個參數原則上是被封裝保護起來的，Uni">
+  <meta name="description" content="最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -73,7 +72,7 @@
     </header>
     <div class="entry">
       
-        <p>最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。</p>
+        <p>最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。<br><a id="more"></a></p>
 <p>跟其他API的Rect差不多主要成員是left,right,top,bottom分別代表左右上下四個參數，但是這四個參數原則上是被封裝保護起來的，Unity有這幾種操作模式來改變參數，不太建議在一個操作中混合使用(<del>除非邏輯概念很好</del>)。<br><br><strong>需要特別注意的是Y軸在UI系統中通常yMin代表top、yMax代表bottom，簡單說就是由上往下計算。</strong><br></p>
 <p>1： xMin,yMin,xMax,yMax <br></p>
 <pre><code>改變 xMin 時會修改 left;

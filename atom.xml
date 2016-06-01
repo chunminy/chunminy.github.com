@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://chunminy.github.io/"/>
-  <updated>2016-05-31T16:41:05.000Z</updated>
+  <updated>2016-06-01T00:29:44.000Z</updated>
   <id>https://chunminy.github.io/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="https://chunminy.github.io/2016/05/31/0/"/>
     <id>https://chunminy.github.io/2016/05/31/0/</id>
     <published>2016-05-31T15:02:14.000Z</published>
-    <updated>2016-05-31T16:41:05.000Z</updated>
+    <updated>2016-06-01T00:29:44.000Z</updated>
     
-    <content type="html">&lt;p&gt;最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。&lt;/p&gt;
+    <content type="html">&lt;p&gt;最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;跟其他API的Rect差不多主要成員是left,right,top,bottom分別代表左右上下四個參數，但是這四個參數原則上是被封裝保護起來的，Unity有這幾種操作模式來改變參數，不太建議在一個操作中混合使用(&lt;del&gt;除非邏輯概念很好&lt;/del&gt;)。&lt;br&gt;&lt;br&gt;&lt;strong&gt;需要特別注意的是Y軸在UI系統中通常yMin代表top、yMax代表bottom，簡單說就是由上往下計算。&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;1： xMin,yMin,xMax,yMax &lt;br&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;改變 xMin 時會修改 left;
@@ -116,8 +116,7 @@ public class RectTest : MonoBehaviour {
     
     <summary type="html">
     
-      &lt;p&gt;最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。&lt;/p&gt;
-&lt;p&gt;跟其他API的Rect差不多主要成員是left,right,top,bottom分別代表左右上下四個參數，但是這
+      &lt;p&gt;最近想了一個玩具正在撰寫中，稍微使用到介面概念、座標轉換之類的很煩就是了，途中一直使用到Rect索性就把Rect相關的API看一遍，然後記錄一下。&lt;br&gt;
     
     </summary>
     
@@ -135,9 +134,9 @@ public class RectTest : MonoBehaviour {
     <link href="https://chunminy.github.io/2016/05/28/2016-05-28/"/>
     <id>https://chunminy.github.io/2016/05/28/2016-05-28/</id>
     <published>2016-05-28T14:07:10.000Z</published>
-    <updated>2016-05-31T15:06:33.000Z</updated>
+    <updated>2016-06-01T00:30:54.000Z</updated>
     
-    <content type="html">&lt;p&gt;雖然想說一個晚上就可以做完的Project&lt;br&gt;&lt;br&gt;不過這個花了多點時間，差不多是一個半的晚上吧。&lt;br&gt;&lt;br&gt;機制還缺很多沒補完…不過就先這樣吧。&lt;/p&gt;
+    <content type="html">&lt;p&gt;雖然想說一個晚上就可以做完的Project&lt;br&gt;&lt;br&gt;不過這個花了多點時間，差不多是一個半的晚上吧。&lt;br&gt;&lt;br&gt;機制還缺很多沒補完…不過就先這樣吧。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;del&gt;&lt;a href=&quot;https://itunes.apple.com/tw/app/shi-kong-zhi-men/id1071795421?amp%3Bct=GNN&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;向時空之門致敬&lt;/a&gt;&lt;/del&gt;&lt;/p&gt;
 &lt;iframe width=&quot;420&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/oHVv4YG3GS0&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
 
@@ -148,8 +147,7 @@ public class RectTest : MonoBehaviour {
     
     <summary type="html">
     
-      &lt;p&gt;雖然想說一個晚上就可以做完的Project&lt;br&gt;&lt;br&gt;不過這個花了多點時間，差不多是一個半的晚上吧。&lt;br&gt;&lt;br&gt;機制還缺很多沒補完…不過就先這樣吧。&lt;/p&gt;
-&lt;p&gt;&lt;del&gt;&lt;a href=&quot;https://itunes.apple.com/tw/app/shi-k
+      &lt;p&gt;雖然想說一個晚上就可以做完的Project&lt;/br&gt;&lt;br&gt;不過這個花了多點時間，差不多是一個半的晚上吧。&lt;/br&gt;&lt;br&gt;機制還缺很多沒補完…不過就先這樣吧。&lt;br&gt;
     
     </summary>
     
@@ -226,14 +224,15 @@ new_po
     <link href="https://chunminy.github.io/2016/05/28/00/"/>
     <id>https://chunminy.github.io/2016/05/28/00/</id>
     <published>2016-05-28T04:04:50.000Z</published>
-    <updated>2016-05-31T15:06:33.000Z</updated>
+    <updated>2016-06-01T00:30:53.000Z</updated>
     
     <content type="html">&lt;p&gt;為了避免下意識多按的空白鍵造成程式碼夾帶多餘的空白，翻找了一下sublime text的設定&lt;br&gt;只需要在 &lt;code&gt;Preferences-&amp;gt;Settings-User&lt;/code&gt; 調整參數就可以了&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;quot;trim_trailing_white_space_on_save&amp;quot;: true,
 &amp;quot;draw_white_space&amp;quot;: &amp;quot;all&amp;quot;,
 &amp;quot;translate_tabs_to_spaces&amp;quot;: true,
 &amp;quot;tab_size&amp;quot;: 4,
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##trim_trailing_white_space_on_save&lt;br&gt;在存檔時會自動刪除每一行後面多餘的空白&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;##trim_trailing_white_space_on_save&lt;br&gt;在存檔時會自動刪除每一行後面多餘的空白&lt;/p&gt;
 &lt;p&gt;##draw_white_space&lt;br&gt;會直接顯示出空白或是Tab，這樣就可以分辨到底哪邊是空白哪邊是Tab了&lt;/p&gt;
 &lt;p&gt;##translate_tabs_to_spaces&lt;br&gt;按Tab時自動轉成空白鍵&lt;/p&gt;
 &lt;p&gt;##tab_size&lt;br&gt;每次案tab代表幾個空白&lt;/p&gt;
@@ -241,8 +240,12 @@ new_po
     
     <summary type="html">
     
-      &lt;p&gt;為了避免下意識多按的空白鍵造成程式碼夾帶多餘的空白，翻找了一下sublime text的設定&lt;br&gt;只需要在 &lt;code&gt;Preferences-&amp;gt;Settings-User&lt;/code&gt; 調整參數就可以了&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;quot;trim_trai
+      &lt;p&gt;為了避免下意識多按的空白鍵造成程式碼夾帶多餘的空白，翻找了一下sublime text的設定&lt;/br&gt;只需要在 &lt;code&gt;Preferences-&amp;gt;Settings-User&lt;/code&gt; 調整參數就可以了&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot;trim_trailing_white_space_on_save&amp;quot;: true,
+&amp;quot;draw_white_space&amp;quot;: &amp;quot;all&amp;quot;,
+&amp;quot;translate_tabs_to_spaces&amp;quot;: true,
+&amp;quot;tab_size&amp;quot;: 4,
+&lt;/code&gt;&lt;/pre&gt;
     
     </summary>
     
@@ -258,9 +261,10 @@ new_po
     <link href="https://chunminy.github.io/2016/05/24/00/"/>
     <id>https://chunminy.github.io/2016/05/24/00/</id>
     <published>2016-05-24T07:31:06.000Z</published>
-    <updated>2016-05-31T15:06:33.000Z</updated>
+    <updated>2016-06-01T00:30:50.000Z</updated>
     
-    <content type="html">&lt;h1 id=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;a href=&quot;#聽說最近流行一個晚上就可以做完的project&quot; class=&quot;headerlink&quot; title=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;/a&gt;聽說最近流行一個晚上就可以做完的project&lt;/h1&gt;&lt;p&gt;早些年在玩Minecraft時就簡單寫了一套Minecraft基本系統玩玩，最近玩了PS4上的&lt;a href=&quot;http://www.dragonquest.jp/builders/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DBQ&lt;/a&gt;之後心癢難耐，就把之前的系統拿出來整理一下，不過素材都是公司資產所以就不方便拿來測試。&lt;/p&gt;
+    <content type="html">&lt;h1 id=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;a href=&quot;#聽說最近流行一個晚上就可以做完的project&quot; class=&quot;headerlink&quot; title=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;/a&gt;聽說最近流行一個晚上就可以做完的project&lt;/h1&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;早些年在玩Minecraft時就簡單寫了一套Minecraft基本系統玩玩，最近玩了PS4上的&lt;a href=&quot;http://www.dragonquest.jp/builders/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DBQ&lt;/a&gt;之後心癢難耐，就把之前的系統拿出來整理一下，不過素材都是公司資產所以就不方便拿來測試。&lt;/p&gt;
 &lt;p&gt;基於最近回去複習了Unity，而最快的方式就是寫個小專案來恢復記憶，所以乾脆就用Unity搭配之前寫的小系統，在稍微串接一下角色移動、UI事件、物理碰撞、攝影機追蹤這些功能，簡略地寫了一個小小的Demo來玩玩。&lt;/p&gt;
 &lt;p&gt;手機上跑起來的效果大概就這樣吧&lt;/p&gt;
 &lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/-q6qENlF0y4&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
@@ -269,7 +273,7 @@ new_po
     
     <summary type="html">
     
-      &lt;h1 id=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;a href=&quot;#聽說最近流行一個晚上就可以做完的project&quot; class=&quot;headerlink&quot; title=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;/a&gt;聽說最近流行一個晚上就可以做完的p
+      &lt;h1 id=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;a href=&quot;#聽說最近流行一個晚上就可以做完的project&quot; class=&quot;headerlink&quot; title=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;/a&gt;聽說最近流行一個晚上就可以做完的project&lt;/h1&gt;
     
     </summary>
     
