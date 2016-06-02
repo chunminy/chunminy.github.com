@@ -293,7 +293,7 @@ new_po
     <link href="https://chunminy.github.io/2016/05/24/00/"/>
     <id>https://chunminy.github.io/2016/05/24/00/</id>
     <published>2016-05-24T07:31:06.000Z</published>
-    <updated>2016-06-01T00:30:50.000Z</updated>
+    <updated>2016-06-02T03:41:33.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;a href=&quot;#聽說最近流行一個晚上就可以做完的project&quot; class=&quot;headerlink&quot; title=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;/a&gt;聽說最近流行一個晚上就可以做完的project&lt;/h1&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;p&gt;早些年在玩Minecraft時就簡單寫了一套Minecraft基本系統玩玩，最近玩了PS4上的&lt;a href=&quot;http://www.dragonquest.jp/builders/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DBQ&lt;/a&gt;之後心癢難耐，就把之前的系統拿出來整理一下，不過素材都是公司資產所以就不方便拿來測試。&lt;/p&gt;
@@ -301,6 +301,8 @@ new_po
 &lt;p&gt;手機上跑起來的效果大概就這樣吧&lt;/p&gt;
 &lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/-q6qENlF0y4&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
 
+
+&lt;p&gt;PS:角色模型跟動作是使用&lt;a href=&quot;https://www.assetstore.unity3d.com/en/#!/content/40756&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Survival Shooter&lt;/a&gt;提供的美術資源，不得不說Unity在某些層面上真的是很方便。&lt;/p&gt;
 </content>
     
     <summary type="html">
