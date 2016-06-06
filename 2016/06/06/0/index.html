@@ -3,21 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hexo 生成檔案附帶日期 | Dreaming</title>
+  <title>Unity UI 事件處理 | Dreaming</title>
   <meta name="author" content="chunminy">
   
-  <meta name="description" content="使用Hexo 建立新文章時，只需要下指令hexo n [title]就會自動生成md檔若是希望檔名可以附帶日期以便整理，可以修改_config.yml
-# Writing
-new_post_name: :year-:month-:day.md # File name of new posts
-
-
-
-">
+  <meta name="description" content="Unity 本身內建了EventSystem系統，通常在新增UI元件時Unity就會自動補上這個物件，但是….如果不想使用Unity內建系統或是嫌Unity功能不足的話，那就只好自己寫Script來接收訊息跟處理了。
+這邊使用delegate來串功能">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Hexo 生成檔案附帶日期"/>
+  <meta property="og:title" content="Unity UI 事件處理"/>
   <meta property="og:site_name" content="Dreaming"/>
 
   
@@ -68,50 +63,93 @@ new_post_name: :year-:month-:day.md # File name of new posts
     <header>
       
         <div class="icon"></div>
-        <time datetime="2016-05-28T07:25:16.000Z"><a href="/2016/05/28/1/">2016-05-28</a></time>
+        <time datetime="2016-06-06T04:09:36.000Z"><a href="/2016/06/06/0/">2016-06-06</a></time>
       
       
   
-    <h1 class="title">Hexo 生成檔案附帶日期</h1>
+    <h1 class="title">Unity UI 事件處理</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>使用Hexo 建立新文章時，只需要下指令<code>hexo n [title]</code>就會自動生成md檔<br>若是希望檔名可以附帶日期以便整理，可以修改<code>_config.yml</code></p>
-<pre><code># Writing
-new_post_name: :year-:month-:day.md # File name of new posts
-</code></pre><table>
-<thead>
-<tr>
-<th>參數</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>:title</td>
-<td>標題</td>
-</tr>
-<tr>
-<td>:year</td>
-<td>年份</td>
-</tr>
-<tr>
-<td>:month</td>
-<td>月份</td>
-</tr>
-<tr>
-<td>:day</td>
-<td>日期</td>
-</tr>
-</tbody>
-</table>
-<p>如此一來自動產生的檔案就會變成2016-05-28.md<br><br>附帶一提，若是有相同名稱的檔案則會自動補上count<br><br>例如</p>
-<pre><code>2016-05-28.md
-2016-05-28-1.md
-2016-05-28-2.md
-</code></pre>
+        <p>Unity 本身內建了EventSystem系統，通常在新增UI元件時Unity就會自動補上這個物件，但是….如果不想使用Unity內建系統或是嫌Unity功能不足的話，那就只好自己寫Script來接收訊息跟處理了。<br></p>
+<p>這邊使用<code>delegate</code>來串功能<br></p>
+<a id="more"></a>
+<p>controler 主體</p>
+<pre><code>using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class ButtonEventListener : 
+MonoBehaviour, 
+IPointerClickHandler, 
+IPointerDownHandler, 
+IPointerUpHandler,
+IPointerEnterHandler,
+IPointerExitHandler
+{
+    public delegate void UIProxy (GameObject gb);
+    public event UIProxy OnClick;
+    public event UIProxy OnDown;
+    public event UIProxy OnUp;
+    public event UIProxy OnEnter;
+    public event UIProxy OnExit;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (OnClick != null) {
+            OnClick (this.gameObject);
+        }
+    }
+    public void OnPointerDown (PointerEventData eventData)
+    {
+        if (OnDown != null) {
+            OnDown (this.gameObject);
+        }
+    }
+    public void OnPointerUp (PointerEventData eventData)
+    {
+        if (OnUp != null) {
+            OnUp (this.gameObject);
+        }
+    }
+    public void OnPointerEnter (PointerEventData eventData)
+    {
+        if (OnEnter != null) {
+            OnEnter (this.gameObject);
+        }
+    }
+    public void OnPointerExit (PointerEventData eventData)
+    {
+        if (OnExit != null) {
+            OnExit (this.gameObject);
+        }
+    }
+}
+</code></pre><p>UI user</p>
+<pre><code>using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class TestButton : MonoBehaviour 
+{
+    void Start () {
+        // 啟動時自動生成ButtonEventListener
+        ButtonEventListener btnListener = AddComponent&lt;ButtonEventListener&gt;();
+
+        // function 串接
+        btnListener.OnDown += delegate (GameObject gb) {
+            Debug.Log(&quot;Button onDown&quot;);
+        };
+        btnListener.OnUp += delegate (GameObject gb) {
+            Debug.Log(&quot;Button onUp&quot;);
+        };
+    }
+}
+</code></pre><p>接著把生成的UI元件Image或是button原生的Script關閉或刪除，再補上TestButton這個Component就可以正常運作了，以上</p>
+
       
     </div>
     <footer>
@@ -119,13 +157,13 @@ new_post_name: :year-:month-:day.md # File name of new posts
         
   
   <div class="categories">
-    <a href="/categories/Tool/">Tool</a>
+    <a href="/categories/Programs/">Programs</a>
   </div>
 
         
   
   <div class="tags">
-    <a href="/tags/Hexo/">Hexo</a>
+    <a href="/tags/Unity/">Unity</a>
   </div>
 
         

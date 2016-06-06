@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://chunminy.github.io/"/>
-  <updated>2016-06-01T15:57:04.000Z</updated>
+  <updated>2016-06-06T07:37:03.000Z</updated>
   <id>https://chunminy.github.io/</id>
   
   <author>
@@ -14,6 +14,105 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Unity UI 事件處理</title>
+    <link href="https://chunminy.github.io/2016/06/06/0/"/>
+    <id>https://chunminy.github.io/2016/06/06/0/</id>
+    <published>2016-06-06T04:09:36.000Z</published>
+    <updated>2016-06-06T07:37:03.000Z</updated>
+    
+    <content type="html">&lt;p&gt;Unity 本身內建了EventSystem系統，通常在新增UI元件時Unity就會自動補上這個物件，但是….如果不想使用Unity內建系統或是嫌Unity功能不足的話，那就只好自己寫Script來接收訊息跟處理了。&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;這邊使用&lt;code&gt;delegate&lt;/code&gt;來串功能&lt;br&gt;&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;controler 主體&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class ButtonEventListener : 
+MonoBehaviour, 
+IPointerClickHandler, 
+IPointerDownHandler, 
+IPointerUpHandler,
+IPointerEnterHandler,
+IPointerExitHandler
+{
+    public delegate void UIProxy (GameObject gb);
+    public event UIProxy OnClick;
+    public event UIProxy OnDown;
+    public event UIProxy OnUp;
+    public event UIProxy OnEnter;
+    public event UIProxy OnExit;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (OnClick != null) {
+            OnClick (this.gameObject);
+        }
+    }
+    public void OnPointerDown (PointerEventData eventData)
+    {
+        if (OnDown != null) {
+            OnDown (this.gameObject);
+        }
+    }
+    public void OnPointerUp (PointerEventData eventData)
+    {
+        if (OnUp != null) {
+            OnUp (this.gameObject);
+        }
+    }
+    public void OnPointerEnter (PointerEventData eventData)
+    {
+        if (OnEnter != null) {
+            OnEnter (this.gameObject);
+        }
+    }
+    public void OnPointerExit (PointerEventData eventData)
+    {
+        if (OnExit != null) {
+            OnExit (this.gameObject);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;UI user&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class TestButton : MonoBehaviour 
+{
+    void Start () {
+        // 啟動時自動生成ButtonEventListener
+        ButtonEventListener btnListener = AddComponent&amp;lt;ButtonEventListener&amp;gt;();
+
+        // function 串接
+        btnListener.OnDown += delegate (GameObject gb) {
+            Debug.Log(&amp;quot;Button onDown&amp;quot;);
+        };
+        btnListener.OnUp += delegate (GameObject gb) {
+            Debug.Log(&amp;quot;Button onUp&amp;quot;);
+        };
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;接著把生成的UI元件Image或是button原生的Script關閉或刪除，再補上TestButton這個Component就可以正常運作了，以上&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Unity 本身內建了EventSystem系統，通常在新增UI元件時Unity就會自動補上這個物件，但是….如果不想使用Unity內建系統或是嫌Unity功能不足的話，那就只好自己寫Script來接收訊息跟處理了。&lt;/br&gt;&lt;/p&gt;
+&lt;p&gt;這邊使用&lt;code&gt;delegate&lt;/code&gt;來串功能&lt;/br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Programs" scheme="https://chunminy.github.io/categories/Programs/"/>
+    
+    
+      <category term="Unity" scheme="https://chunminy.github.io/tags/Unity/"/>
+    
+  </entry>
   
   <entry>
     <title>串流系統基本款</title>
