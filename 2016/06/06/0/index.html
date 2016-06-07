@@ -7,7 +7,7 @@
   <meta name="author" content="chunminy">
   
   <meta name="description" content="Unity 本身內建了EventSystem系統，通常在新增UI元件時Unity就會自動補上這個物件，但是….如果不想使用Unity內建系統或是嫌Unity功能不足的話，那就只好自己寫Script來接收訊息跟處理了。
-這邊使用delegate來串功能">
+但是有個重點!!!該Gameobject需要有UI Component這邊使用delegate來串功能">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -74,7 +74,7 @@
     <div class="entry">
       
         <p>Unity 本身內建了EventSystem系統，通常在新增UI元件時Unity就會自動補上這個物件，但是….如果不想使用Unity內建系統或是嫌Unity功能不足的話，那就只好自己寫Script來接收訊息跟處理了。<br></p>
-<p>這邊使用<code>delegate</code>來串功能<br></p>
+<h3 id="但是有個重點-該Gameobject需要有UI-Component"><a href="#但是有個重點-該Gameobject需要有UI-Component" class="headerlink" title="但是有個重點!!!該Gameobject需要有UI Component"></a>但是有個重點!!!該Gameobject需要有UI Component</h3><p>這邊使用<code>delegate</code>來串功能<br></p>
 <a id="more"></a>
 <p>controler 主體</p>
 <pre><code>using UnityEngine;
@@ -148,7 +148,7 @@ public class TestButton : MonoBehaviour
         };
     }
 }
-</code></pre><p>接著把生成的UI元件Image或是button原生的Script關閉或刪除，再補上TestButton這個Component就可以正常運作了，以上</p>
+</code></pre><p><del>接著把生成的UI元件Image或是button原生的Script關閉或刪除，再</del> (這個方式需要原生的UI元件內的Raycast Target才會觸發，所以不能移除或關閉…)補上TestButton這個Component就可以正常運作了，以上</p>
 
       
     </div>
@@ -192,7 +192,7 @@ public class TestButton : MonoBehaviour
 
 
 <section id="comment">
-  <h1 class="title">Kommentare</h1>
+  <h1 class="title">Comentarios</h1>
 
   
   <div id="disqus_thread">
@@ -205,14 +205,14 @@ public class TestButton : MonoBehaviour
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="Suche">
+    <input type="search" name="q" results="0" placeholder="Buscar">
     <input type="hidden" name="q" value="site:chunminy.github.io">
   </form>
 </div>
 
   
 <div class="widget tag">
-  <h3 class="title">Kategorien</h3>
+  <h3 class="title">Categorías</h3>
   <ul class="entry">
   
     <li><a href="/categories/Programs/Demo/">Demo</a><small>3</small></li>
@@ -229,7 +229,7 @@ public class TestButton : MonoBehaviour
 
   
 <div class="widget tag">
-  <h3 class="title">Tags</h3>
+  <h3 class="title">Etiquetas</h3>
   <ul class="entry">
   
     <li><a href="/tags/Game/">Game</a><small>2</small></li>
