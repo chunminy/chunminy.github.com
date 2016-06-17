@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://chunminy.github.io/"/>
-  <updated>2016-06-07T02:14:30.000Z</updated>
+  <updated>2016-06-17T03:48:21.000Z</updated>
   <id>https://chunminy.github.io/</id>
   
   <author>
@@ -14,6 +14,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Unity script function 執行順序</title>
+    <link href="https://chunminy.github.io/2016/06/17/0/"/>
+    <id>https://chunminy.github.io/2016/06/17/0/</id>
+    <published>2016-06-17T03:26:04.000Z</published>
+    <updated>2016-06-17T03:48:21.000Z</updated>
+    
+    <content type="html">&lt;p&gt;一般建立Unity Script時，Editor產生檔案後會讓該Script繼承MonoBehaviour。&lt;/p&gt;
+&lt;p&gt;由於Unity是一個蠻高階的引擎系統，所以需要一個基本class掛載各種介面包山包海的讓系統可以快速串接運行，而MonoBehaviour就是這個Class。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;MonoBehaviour 本身提供很多接口讓開發者來繼承使用，所以使用MonoBehaviour最先也最重要的就是需要瞭解Unity系統在運行時，MonoBehaviour的接口呼叫順序，知道這個順序後才有辦法思考各種功能應該放在哪個function裡面才能正常運作。&lt;/p&gt;
+&lt;p&gt;下圖為執行順序，圖是從&lt;a href=&quot;https://docs.unity3d.com/Manual/ExecutionOrder.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Unity&lt;/a&gt;網頁取來的&lt;br&gt;&lt;img src=&quot;https://docs.unity3d.com/uploads/Main/monobehaviour_flowchart.svg&quot;&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一般建立Unity Script時，Editor產生檔案後會讓該Script繼承MonoBehaviour。&lt;/p&gt;
+&lt;p&gt;由於Unity是一個蠻高階的引擎系統，所以需要一個基本class掛載各種介面包山包海的讓系統可以快速串接運行，而MonoBehaviour就是這個Class。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Programs" scheme="https://chunminy.github.io/categories/Programs/"/>
+    
+    
+      <category term="Unity" scheme="https://chunminy.github.io/tags/Unity/"/>
+    
+  </entry>
   
   <entry>
     <title>Unity UI 事件處理</title>

@@ -3,19 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>sublime text 移除空白 | Dreaming</title>
+  <title>Unity script function 執行順序 | Dreaming</title>
   <meta name="author" content="chunminy">
   
-  <meta name="description" content="為了避免下意識多按的空白鍵造成程式碼夾帶多餘的空白，翻找了一下sublime text的設定只需要在 Preferences-&amp;gt;Settings-User 調整參數就可以了
-&amp;quot;trim_trailing_white_space_on_save&amp;quot;: true,
-&amp;quot;draw_white_space&amp;quot;: &amp;quot;all&amp;quot;,
-&amp;quot;translate_tabs_to_spaces&amp;quot;: true,
-&amp;quot;tab_size&amp;quot;: 4,">
+  <meta name="description" content="一般建立Unity Script時，Editor產生檔案後會讓該Script繼承MonoBehaviour。
+由於Unity是一個蠻高階的引擎系統，所以需要一個基本class掛載各種介面包山包海的讓系統可以快速串接運行，而MonoBehaviour就是這個Class。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="sublime text 移除空白"/>
+  <meta property="og:title" content="Unity script function 執行順序"/>
   <meta property="og:site_name" content="Dreaming"/>
 
   
@@ -66,26 +63,21 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2016-05-28T04:04:50.000Z"><a href="/2016/05/28/00/">2016-05-28</a></time>
+        <time datetime="2016-06-17T03:26:04.000Z"><a href="/2016/06/17/0/">2016-06-17</a></time>
       
       
   
-    <h1 class="title">sublime text 移除空白</h1>
+    <h1 class="title">Unity script function 執行順序</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>為了避免下意識多按的空白鍵造成程式碼夾帶多餘的空白，翻找了一下sublime text的設定<br>只需要在 <code>Preferences-&gt;Settings-User</code> 調整參數就可以了</p>
-<pre><code>&quot;trim_trailing_white_space_on_save&quot;: true,
-&quot;draw_white_space&quot;: &quot;all&quot;,
-&quot;translate_tabs_to_spaces&quot;: true,
-&quot;tab_size&quot;: 4,
-</code></pre><a id="more"></a>
-<p>##trim_trailing_white_space_on_save<br>在存檔時會自動刪除每一行後面多餘的空白</p>
-<p>##draw_white_space<br>會直接顯示出空白或是Tab，這樣就可以分辨到底哪邊是空白哪邊是Tab了</p>
-<p>##translate_tabs_to_spaces<br>按Tab時自動轉成空白鍵</p>
-<p>##tab_size<br>每次案tab代表幾個空白</p>
+        <p>一般建立Unity Script時，Editor產生檔案後會讓該Script繼承MonoBehaviour。</p>
+<p>由於Unity是一個蠻高階的引擎系統，所以需要一個基本class掛載各種介面包山包海的讓系統可以快速串接運行，而MonoBehaviour就是這個Class。</p>
+<a id="more"></a>
+<p>MonoBehaviour 本身提供很多接口讓開發者來繼承使用，所以使用MonoBehaviour最先也最重要的就是需要瞭解Unity系統在運行時，MonoBehaviour的接口呼叫順序，知道這個順序後才有辦法思考各種功能應該放在哪個function裡面才能正常運作。</p>
+<p>下圖為執行順序，圖是從<a href="https://docs.unity3d.com/Manual/ExecutionOrder.html" target="_blank" rel="external">Unity</a>網頁取來的<br><img src="https://docs.unity3d.com/uploads/Main/monobehaviour_flowchart.svg"></p>
 
       
     </div>
@@ -94,13 +86,13 @@
         
   
   <div class="categories">
-    <a href="/categories/Tool/">Tool</a>
+    <a href="/categories/Programs/">Programs</a>
   </div>
 
         
   
   <div class="tags">
-    <a href="/tags/SublimeText/">SublimeText</a>
+    <a href="/tags/Unity/">Unity</a>
   </div>
 
         
