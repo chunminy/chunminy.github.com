@@ -1,0 +1,311 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Unity Network View | Dreaming</title>
+  <meta name="author" content="chunminy">
+  
+  <meta name="description" content="最近事情一多一忙就忘了要更新，回頭一看發現竟然半個月就過去了，怠惰真是恐怖的東西啊因為專案需求的關係需要Socket來處理資料傳輸，隨便找了一下Unity相關資料雖然不符合我的需求，不過還是暫時紀錄一下好了。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Unity Network View"/>
+  <meta property="og:site_name" content="Dreaming"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Dreaming" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-3689344-2', 'auto');
+	ga('send', 'pageview');
+
+</script>
+
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Dreaming</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-07-03T14:06:07.000Z"><a href="/2016/07/03/0/">2016-07-03</a></time>
+      
+      
+  
+    <h1 class="title">Unity Network View</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>最近事情一多一忙就忘了要更新，回頭一看發現竟然半個月就過去了，怠惰真是恐怖的東西啊<br><br>因為專案需求的關係需要Socket來處理資料傳輸，隨便找了一下Unity相關資料雖然不符合我的需求，不過還是暫時紀錄一下好了。<br><a id="more"></a></p>
+<p>主要是使用Unity提供的NetworkView功能來進行連線，搭配使用MasterServer進行快速連線。</p>
+<p>Network.InitializeServer (connections, listenPort, !Network.HavePublicAddress ());<br>給予連線上限、Port、是否支援NAT三個參數來啟動伺服器。</p>
+<p>藉由Network.peerType來判定目前Network連線狀態，分別是Disconnected、Server、Client、Connecting四個狀態。</p>
+<p>Network.incomingPassword Unity 提供的連線密碼機制密碼相同才能進行連線，需要在連線啟動前就設定好。</p>
+<h2 id="這邊是Server-啟動的Code"><a href="#這邊是Server-啟動的Code" class="headerlink" title="這邊是Server 啟動的Code"></a><strong>這邊是Server 啟動的Code</strong></h2><pre><code>void ServerStartup () {
+    int connections = 2;
+    int listenPort = 10000;
+  Network.incomingPassword = &quot;TestUnityNetwork&quot;;
+    NetworkConnectionError error = Network.InitializeServer (connections, listenPort, !Network.HavePublicAddress ());
+    if (error != NetworkConnectionError.NoError) {
+        Debug.Log (&quot;NetworkConnectionError:&quot; + error.ToString ());
+    }
+    MasterServer.RegisterHost (&quot;MasterServer&quot;, &quot;Test 01&quot;, &quot;description&quot;);
+}
+
+void ServerQuit () {
+    Network.Disconnect ();
+    MasterServer.UnregisterHost ();
+    message = &quot;&quot;;
+}
+
+void OnApplicationQuit () {
+    ServerQuit ();
+}
+
+void OnGUI () {
+    switch (Network.peerType)
+    {
+    case  NetworkPeerType.Disconnected:
+        if (GUILayout.Button (&quot;Create Server&quot;)) {
+            ServerStartup ();
+        }
+        break;
+    case NetworkPeerType.Server:
+        GUILayout.Label (&quot;Server is created succesfully&quot;);
+        GUILayout.Label (&quot;IP/port: &quot; + Network.player.ipAddress + &quot;/&quot; + Network.player.port);
+        int length = Network.connections.Length;
+        GUILayout.Label (&quot;There are &quot; + length + &quot; clients that connect to the server &quot;);
+        for (int i = 0; i &lt; length; i++) {
+            GUILayout.Label (&quot;The client IP is: &quot; + Network.connections[i].ipAddress);
+            GUILayout.Label (&quot;The client Port is &quot; + Network.connections[i].port);
+        }
+        if (GUILayout.Button (&quot;Close the connections&quot;)) {
+            ServerQuit ();
+        }
+        break;
+
+    case NetworkPeerType.Client:
+        GUILayout.Label (&quot;Network Clinet&quot;);
+        break;
+
+    case NetworkPeerType.Connecting:
+        Debug.Log (&quot;Network Connecting&quot;);
+        break;
+    }
+    GUILayout.Box (message);
+}
+</code></pre><p><br></p>
+<h2 id="這邊是Client-啟動的Code"><a href="#這邊是Client-啟動的Code" class="headerlink" title="這邊是Client 啟動的Code"></a><strong>這邊是Client 啟動的Code</strong></h2><pre><code>void Update () {
+    MasterServer.RequestHostList (&quot;MasterServerTest&quot;);
+}
+
+void OnGUI () {
+    switch (Network.peerType)
+    {
+    case NetworkPeerType.Disconnected:
+        HostData[] hostData = MasterServer.PollHostList ();
+        foreach (HostData data in hostData) {
+            var name = data.gameName + &quot; &quot; + data.connectedPlayers + &quot; / &quot; + data.playerLimit;
+            GUILayout.Label (name);
+            GUILayout.Label (data.comment);
+            foreach (string host in data.ip) {
+                GUILayout.Label (&quot;IP/Port: &quot; + host + &quot;/&quot; + data.port);
+                if (GUILayout.Button (&quot;connect&quot;)) {
+                    NetworkConnectionError error = Network.Connect (host, data.port, null);
+                    Debug.Log (error);
+                }
+            }
+        }
+        break;
+
+    case NetworkPeerType.Client:
+        GUILayout.Label (&quot;Connection is successful&quot;);
+        GUILayout.Label (&quot;Local IP/Port:&quot; + Network.player.ipAddress + &quot;/&quot; + Network.player.port + &quot;/&quot; + Network.player.externalPort);
+        int length = Network.connections.Length;
+        GUILayout.Label (&quot;There are &quot; + length.ToString () +&quot;connects&quot;);
+        for (int i = 0; i &lt; length; i++) {
+            GUILayout.Label (&quot;The server IP is: &quot; + Network.connections[i].ipAddress);
+            GUILayout.Label (&quot;The server Port is &quot; + Network.connections[i].port);
+        }
+        if (GUILayout.Button (&quot;Close the connections&quot;)) {
+            Network.Disconnect ();
+            message = &quot;&quot;;
+        }
+        break;
+
+    case NetworkPeerType.Connecting:
+        GUILayout.Label (&quot;Connecting......&quot;);
+        break;
+
+    default:
+        break;
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Programs/">Programs</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Unity/">Unity</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Kommentare</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Suche">
+    <input type="hidden" name="q" value="site:chunminy.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Kategorien</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Programs/Demo/">Demo</a><small>3</small></li>
+  
+    <li><a href="/categories/Programs/Notes/">Notes</a><small>1</small></li>
+  
+    <li><a href="/categories/Programs/">Programs</a><small>7</small></li>
+  
+    <li><a href="/categories/Tool/">Tool</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Game/">Game</a><small>2</small></li>
+  
+    <li><a href="/tags/Hexo/">Hexo</a><small>1</small></li>
+  
+    <li><a href="/tags/SublimeText/">SublimeText</a><small>1</small></li>
+  
+    <li><a href="/tags/Unity/">Unity</a><small>7</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 chunminy
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'dreaming2016';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://chunminy.github.io/"/>
-  <updated>2016-06-17T03:48:21.000Z</updated>
+  <updated>2016-07-03T14:43:06.000Z</updated>
   <id>https://chunminy.github.io/</id>
   
   <author>
@@ -14,6 +14,133 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Unity Network View</title>
+    <link href="https://chunminy.github.io/2016/07/03/0/"/>
+    <id>https://chunminy.github.io/2016/07/03/0/</id>
+    <published>2016-07-03T14:06:07.000Z</published>
+    <updated>2016-07-03T14:43:06.000Z</updated>
+    
+    <content type="html">&lt;p&gt;最近事情一多一忙就忘了要更新，回頭一看發現竟然半個月就過去了，怠惰真是恐怖的東西啊&lt;br&gt;&lt;br&gt;因為專案需求的關係需要Socket來處理資料傳輸，隨便找了一下Unity相關資料雖然不符合我的需求，不過還是暫時紀錄一下好了。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;主要是使用Unity提供的NetworkView功能來進行連線，搭配使用MasterServer進行快速連線。&lt;/p&gt;
+&lt;p&gt;Network.InitializeServer (connections, listenPort, !Network.HavePublicAddress ());&lt;br&gt;給予連線上限、Port、是否支援NAT三個參數來啟動伺服器。&lt;/p&gt;
+&lt;p&gt;藉由Network.peerType來判定目前Network連線狀態，分別是Disconnected、Server、Client、Connecting四個狀態。&lt;/p&gt;
+&lt;p&gt;Network.incomingPassword Unity 提供的連線密碼機制密碼相同才能進行連線，需要在連線啟動前就設定好。&lt;/p&gt;
+&lt;h2 id=&quot;這邊是Server-啟動的Code&quot;&gt;&lt;a href=&quot;#這邊是Server-啟動的Code&quot; class=&quot;headerlink&quot; title=&quot;這邊是Server 啟動的Code&quot;&gt;&lt;/a&gt;&lt;strong&gt;這邊是Server 啟動的Code&lt;/strong&gt;&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;void ServerStartup () {
+    int connections = 2;
+    int listenPort = 10000;
+  Network.incomingPassword = &amp;quot;TestUnityNetwork&amp;quot;;
+    NetworkConnectionError error = Network.InitializeServer (connections, listenPort, !Network.HavePublicAddress ());
+    if (error != NetworkConnectionError.NoError) {
+        Debug.Log (&amp;quot;NetworkConnectionError:&amp;quot; + error.ToString ());
+    }
+    MasterServer.RegisterHost (&amp;quot;MasterServer&amp;quot;, &amp;quot;Test 01&amp;quot;, &amp;quot;description&amp;quot;);
+}
+
+void ServerQuit () {
+    Network.Disconnect ();
+    MasterServer.UnregisterHost ();
+    message = &amp;quot;&amp;quot;;
+}
+
+void OnApplicationQuit () {
+    ServerQuit ();
+}
+
+void OnGUI () {
+    switch (Network.peerType)
+    {
+    case  NetworkPeerType.Disconnected:
+        if (GUILayout.Button (&amp;quot;Create Server&amp;quot;)) {
+            ServerStartup ();
+        }
+        break;
+    case NetworkPeerType.Server:
+        GUILayout.Label (&amp;quot;Server is created succesfully&amp;quot;);
+        GUILayout.Label (&amp;quot;IP/port: &amp;quot; + Network.player.ipAddress + &amp;quot;/&amp;quot; + Network.player.port);
+        int length = Network.connections.Length;
+        GUILayout.Label (&amp;quot;There are &amp;quot; + length + &amp;quot; clients that connect to the server &amp;quot;);
+        for (int i = 0; i &amp;lt; length; i++) {
+            GUILayout.Label (&amp;quot;The client IP is: &amp;quot; + Network.connections[i].ipAddress);
+            GUILayout.Label (&amp;quot;The client Port is &amp;quot; + Network.connections[i].port);
+        }
+        if (GUILayout.Button (&amp;quot;Close the connections&amp;quot;)) {
+            ServerQuit ();
+        }
+        break;
+
+    case NetworkPeerType.Client:
+        GUILayout.Label (&amp;quot;Network Clinet&amp;quot;);
+        break;
+
+    case NetworkPeerType.Connecting:
+        Debug.Log (&amp;quot;Network Connecting&amp;quot;);
+        break;
+    }
+    GUILayout.Box (message);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2 id=&quot;這邊是Client-啟動的Code&quot;&gt;&lt;a href=&quot;#這邊是Client-啟動的Code&quot; class=&quot;headerlink&quot; title=&quot;這邊是Client 啟動的Code&quot;&gt;&lt;/a&gt;&lt;strong&gt;這邊是Client 啟動的Code&lt;/strong&gt;&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;void Update () {
+    MasterServer.RequestHostList (&amp;quot;MasterServerTest&amp;quot;);
+}
+
+void OnGUI () {
+    switch (Network.peerType)
+    {
+    case NetworkPeerType.Disconnected:
+        HostData[] hostData = MasterServer.PollHostList ();
+        foreach (HostData data in hostData) {
+            var name = data.gameName + &amp;quot; &amp;quot; + data.connectedPlayers + &amp;quot; / &amp;quot; + data.playerLimit;
+            GUILayout.Label (name);
+            GUILayout.Label (data.comment);
+            foreach (string host in data.ip) {
+                GUILayout.Label (&amp;quot;IP/Port: &amp;quot; + host + &amp;quot;/&amp;quot; + data.port);
+                if (GUILayout.Button (&amp;quot;connect&amp;quot;)) {
+                    NetworkConnectionError error = Network.Connect (host, data.port, null);
+                    Debug.Log (error);
+                }
+            }
+        }
+        break;
+
+    case NetworkPeerType.Client:
+        GUILayout.Label (&amp;quot;Connection is successful&amp;quot;);
+        GUILayout.Label (&amp;quot;Local IP/Port:&amp;quot; + Network.player.ipAddress + &amp;quot;/&amp;quot; + Network.player.port + &amp;quot;/&amp;quot; + Network.player.externalPort);
+        int length = Network.connections.Length;
+        GUILayout.Label (&amp;quot;There are &amp;quot; + length.ToString () +&amp;quot;connects&amp;quot;);
+        for (int i = 0; i &amp;lt; length; i++) {
+            GUILayout.Label (&amp;quot;The server IP is: &amp;quot; + Network.connections[i].ipAddress);
+            GUILayout.Label (&amp;quot;The server Port is &amp;quot; + Network.connections[i].port);
+        }
+        if (GUILayout.Button (&amp;quot;Close the connections&amp;quot;)) {
+            Network.Disconnect ();
+            message = &amp;quot;&amp;quot;;
+        }
+        break;
+
+    case NetworkPeerType.Connecting:
+        GUILayout.Label (&amp;quot;Connecting......&amp;quot;);
+        break;
+
+    default:
+        break;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近事情一多一忙就忘了要更新，回頭一看發現竟然半個月就過去了，怠惰真是恐怖的東西啊&lt;/br&gt;&lt;br&gt;因為專案需求的關係需要Socket來處理資料傳輸，隨便找了一下Unity相關資料雖然不符合我的需求，不過還是暫時紀錄一下好了。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Programs" scheme="https://chunminy.github.io/categories/Programs/"/>
+    
+    
+      <category term="Unity" scheme="https://chunminy.github.io/tags/Unity/"/>
+    
+  </entry>
   
   <entry>
     <title>Unity script function 執行順序</title>
