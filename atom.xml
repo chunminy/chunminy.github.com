@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://chunminy.github.io/"/>
-  <updated>2016-07-03T14:43:06.000Z</updated>
+  <updated>2017-08-28T16:35:00.000Z</updated>
   <id>https://chunminy.github.io/</id>
   
   <author>
@@ -14,6 +14,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一言難盡的一年</title>
+    <link href="https://chunminy.github.io/2017/08/29/0/"/>
+    <id>https://chunminy.github.io/2017/08/29/0/</id>
+    <published>2017-08-28T16:29:36.000Z</published>
+    <updated>2017-08-28T16:35:00.000Z</updated>
+    
+    <content type="html">&lt;p&gt;轉眼又一年&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;轉眼又一年&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Murmur" scheme="https://chunminy.github.io/categories/Murmur/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Unity Network View</title>
@@ -420,7 +441,7 @@ public class RectTest : MonoBehaviour {
     <link href="https://chunminy.github.io/2016/05/28/2016-05-28/"/>
     <id>https://chunminy.github.io/2016/05/28/2016-05-28/</id>
     <published>2016-05-28T14:07:10.000Z</published>
-    <updated>2016-06-01T00:30:54.000Z</updated>
+    <updated>2016-07-03T14:49:29.000Z</updated>
     
     <content type="html">&lt;p&gt;雖然想說一個晚上就可以做完的Project&lt;br&gt;&lt;br&gt;不過這個花了多點時間，差不多是一個半的晚上吧。&lt;br&gt;&lt;br&gt;機制還缺很多沒補完…不過就先這樣吧。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;del&gt;&lt;a href=&quot;https://itunes.apple.com/tw/app/shi-kong-zhi-men/id1071795421?amp%3Bct=GNN&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;向時空之門致敬&lt;/a&gt;&lt;/del&gt;&lt;/p&gt;
@@ -453,7 +474,7 @@ public class RectTest : MonoBehaviour {
     <link href="https://chunminy.github.io/2016/05/28/1/"/>
     <id>https://chunminy.github.io/2016/05/28/1/</id>
     <published>2016-05-28T07:25:16.000Z</published>
-    <updated>2016-05-31T15:06:33.000Z</updated>
+    <updated>2016-07-03T14:49:29.000Z</updated>
     
     <content type="html">&lt;p&gt;使用Hexo 建立新文章時，只需要下指令&lt;code&gt;hexo n [title]&lt;/code&gt;就會自動生成md檔&lt;br&gt;若是希望檔名可以附帶日期以便整理，可以修改&lt;code&gt;_config.yml&lt;/code&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;# Writing
@@ -510,7 +531,7 @@ new_po
     <link href="https://chunminy.github.io/2016/05/28/00/"/>
     <id>https://chunminy.github.io/2016/05/28/00/</id>
     <published>2016-05-28T04:04:50.000Z</published>
-    <updated>2016-06-01T00:30:53.000Z</updated>
+    <updated>2016-07-03T14:49:29.000Z</updated>
     
     <content type="html">&lt;p&gt;為了避免下意識多按的空白鍵造成程式碼夾帶多餘的空白，翻找了一下sublime text的設定&lt;br&gt;只需要在 &lt;code&gt;Preferences-&amp;gt;Settings-User&lt;/code&gt; 調整參數就可以了&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;quot;trim_trailing_white_space_on_save&amp;quot;: true,
@@ -547,7 +568,7 @@ new_po
     <link href="https://chunminy.github.io/2016/05/24/00/"/>
     <id>https://chunminy.github.io/2016/05/24/00/</id>
     <published>2016-05-24T07:31:06.000Z</published>
-    <updated>2016-06-02T03:41:33.000Z</updated>
+    <updated>2016-07-03T14:49:29.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;a href=&quot;#聽說最近流行一個晚上就可以做完的project&quot; class=&quot;headerlink&quot; title=&quot;聽說最近流行一個晚上就可以做完的project&quot;&gt;&lt;/a&gt;聽說最近流行一個晚上就可以做完的project&lt;/h1&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;p&gt;早些年在玩Minecraft時就簡單寫了一套Minecraft基本系統玩玩，最近玩了PS4上的&lt;a href=&quot;http://www.dragonquest.jp/builders/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DBQ&lt;/a&gt;之後心癢難耐，就把之前的系統拿出來整理一下，不過素材都是公司資產所以就不方便拿來測試。&lt;/p&gt;
