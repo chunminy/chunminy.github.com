@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>日文50音隨機練習</title>
+    <style>
+        body {
+            font-family: '微軟正黑體', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        #character-display {
+            font-size: 8em;
+            margin: 1em 0;
+            cursor: pointer;
+        }
+        button {
+            font-size: 1.5em;
+            padding: 0.5em 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        #next-button:hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="score-info"></div>
+    <div id="character-display">點擊顯示字符</div>
+    <div id="show-answer" style="display: none;">
+        <button id="show">顯示(下)</button>
+    </div>
+    <div id="answer" style="display: none;">
+        <button id="wrong">錯誤(左)</button>
+        <button id="correct">正確(右)</button>
+    </div>
+    <script>
+        const hiragana = [
+            'あ','い','う','え','お',
+            'か','き','く','け','こ',
+            'さ','し','す','せ','そ',
+            'た','ち','つ','て','と',
+            'な','に','ぬ','ね','の',
+            'は','ひ','ふ','へ','ほ',
+            'ま','み','む','め','も',
+            'や','ゆ','よ',
+            'ら','り','る','れ','ろ',
+            'わ','を','ん'];
+        const katakana = [
+            'ア','イ','ウ','エ','オ',
+            'カ','キ','ク','ケ','コ',
+            'サ','シ','ス','セ','ソ',
+            'タ','チ','ツ','テ','ト',
+            'ナ','ニ','ヌ','ネ','ノ',
+            'ハ','ヒ','フ','ヘ','ホ',
+            'マ','ミ','ム','メ','モ',
+            'ヤ','ユ','ヨ',
+            'ラ','リ','ル','レ','ロ',
+            'ワ','ヲ','ン'
+        ];
+        const english = [
+            'a','i','u','e','o',
+            'ka','ki','ku','ke','ko',
+            'sa','shi','su','se','so',
+            'ta','chi','tsu','te','to',
+            'na','ni','nu','ne','no',
+            'ha','hi','hu','he','ho',
+            'ma','mi','mu','me','mo',
+            'ya','yu','yo',
+            'ra','ri','ru','re','ro',
+            'wa','wo','n'
+        ];
+
+
+        state = -1; // -1 初始, 0 顯示題目, 1 顯示答案, 
+        answerCount = 0;
+        correntCount = 0;
+        answerAmountTime = 0;
+        questionTime = Date.now();
+        characterArray = [];
+        function displayQuestion() {
+            if (state == 0) {
+                return false;
+            }
+            randomValue = Math.random() * (46 * 3);
+            randomIndex = Math.floor(randomValue / 46);
+            randomValue = Math.floor(randomValue % 46);
+            characterArray = [hiragana[randomValue], katakana[randomValue], english[randomValue]];
+            document.getElementById('character-display').innerHTML = characterArray[randomIndex] + '<br>' + '__  __';
+            document.getElementById("show-answer").style.display = "block";
+            document.getElementById("answer").style.display = "none";
+            state = 0;
+            updateScore();
+            answerAmountTime += (Date.now() - questionTime);
+            questionTime = Date.now();
+            return true;
+        }
+        function showAnswer() {
+            if (state == 1) {
+                return false;
+            }
+            Index_1 = (randomIndex + 1) % 3;
+            Index_2 = (randomIndex + 2) % 3;
+            if (Index_1 > Index_2) {
+                temp = Index_1;
+                Index_1 = Index_2;
+                Index_2 = temp;
+            }
+            document.getElementById('character-display').innerHTML = characterArray[randomIndex] + '<br>' + characterArray[Index_1] + '   ' + characterArray[Index_2];
+            document.getElementById("show-answer").style.display = "none";
+            document.getElementById("answer").style.display = "block";
+            isShowAnswer = true;
+            state = 1;
+            return true;
+        }
+        function clickCorrect() {
+            if (!displayQuestion()) {
+                return;
+            }
+            answerCount++;
+            correntCount++;
+            updateScore();
+        }
+        function clickWrong() {
+            if (!displayQuestion()) {
+                return;
+            }
+            answerCount++;
+            updateScore();
+        }
+        function updateScore() {
+            document.getElementById('score-info').innerHTML = '答對 ' + correntCount + ' / ' + answerCount + ' 題' + '<br>' + '平均答題時間 ' + (answerAmountTime / answerCount / 1000).toFixed(2) + ' s' + '<br>' + '總花費時間 ' + (answerAmountTime / 1000) + ' s';
+        }
+        displayQuestion();
+
+        document.getElementById("show").addEventListener('click', showAnswer);
+        document.getElementById("correct").addEventListener('click', clickCorrect);
+        document.getElementById("wrong").addEventListener('click', clickWrong);
+        document.addEventListener('keydown', function(event) {
+            switch(event.keyCode) {
+                case 40: // down
+                    showAnswer();
+                    break;
+                case 37: // left
+                    clickWrong();
+                    break;
+                case 39: // right
+                    clickCorrect();
+                    break;
+            }
+        });
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
